@@ -1,45 +1,22 @@
 import * as vscode from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
-    const goTestDecorationType = vscode.window.createTextEditorDecorationType({
-        backgroundColor: new vscode.ThemeColor('goTestFileDecoration.background')
-    });
-
-    const activeEditor = vscode.window.activeTextEditor;
-    if (activeEditor) {
-        triggerUpdateDecorations(activeEditor, goTestDecorationType);
-    }
-
-    vscode.window.onDidChangeActiveTextEditor(editor => {
-        if (editor) {
-            triggerUpdateDecorations(editor, goTestDecorationType);
+    // Define a new file decoration provider
+    const fileDecorationProvider: vscode.FileDecorationProvider = {
+        provideFileDecoration(uri: vscode.Uri): vscode.ProviderResult<vscode.FileDecoration> {
+            if (uri.path.endsWith('_test.go')) {
+                return {
+                    badge: 'T', // Optional: Adds a badge to the file icon
+                    color: new vscode.ThemeColor('goTestFileDecoration.background'),
+                    tooltip: 'Go Test File'
+                };
+            }
         }
-    }, null, context.subscriptions);
+    };
 
-    vscode.workspace.onDidChangeTextDocument(event => {
-        const editor = vscode.window.activeTextEditor;
-        if (editor && event.document === editor.document) {
-            triggerUpdateDecorations(editor, goTestDecorationType);
-        }
-    }, null, context.subscriptions);
-}
-
-function triggerUpdateDecorations(editor: vscode.TextEditor, decorationType: vscode.TextEditorDecorationType) {
-    if (editor.document.languageId === 'go' && editor.document.fileName.endsWith('_test.go')) {
-        const ranges: vscode.DecorationOptions[] = [];
-        const text = editor.document.getText();
-        const regEx = /./g;
-        let match;
-        while (match = regEx.exec(text)) {
-            const startPos = editor.document.positionAt(match.index);
-            const endPos = editor.document.positionAt(match.index + match[0].length);
-            const range = new vscode.Range(startPos, endPos);
-            ranges.push({ range });
-        }
-        editor.setDecorations(decorationType, ranges);
-    } else {
-        editor.setDecorations(decorationType, []);
-    }
+    // Register the file decoration provider
+    const disposable = vscode.window.registerFileDecorationProvider(fileDecorationProvider);
+    context.subscriptions.push(disposable);
 }
 
 export function deactivate() {}

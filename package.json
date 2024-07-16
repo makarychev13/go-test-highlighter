@@ -2,7 +2,7 @@
   "name": "go-test-highlighter",
   "displayName": "go-test-highlighter",
   "description": "Highlights Go test files",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "publisher": "makarychev13",
   "engines": {
     "vscode": "^1.91.0"
@@ -10,39 +10,28 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
-  "main": "./out/extension.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/makarychev13/go-test-highlighter"
   },
-  "contributes": {
-        "viewsWelcome": [
-            {
-                "view": "explorer",
-                "contents": "Welcome to Go Test Highlighter!"
-            }
-        ],
-        "views": {
-            "explorer": [
-                {
-                    "id": "goTestFiles",
-                    "name": "Go Test Files",
-                    "contextualTitle": "Go Test Files",
-                    "icon": "$(beaker)"
-                }
-            ]
-        },
-        "themes": [],
-        "colors": {
-          "goTestFileDecoration.background": {
-            "dark": "#006400",
-            "light": "#90EE90",
-            "highContrast": "#00FF00",
-            "description": "Color for Go test files."
-          }
-        }
-    },
+"activationEvents": [
+  "*"
+],
+"main": "./out/extension.js",
+"contributes": {
+  "themes": [],
+  "colors": [
+    {
+      "id": "goTestFileDecoration.background",
+      "defaults": {
+        "dark": "#006400",
+        "light": "#90EE90",
+        "highContrast": "#00FF00"
+      },
+      "description": "Background color for Go test files."
+    }
+  ]
+}, 
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
