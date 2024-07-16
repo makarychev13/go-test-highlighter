@@ -2,7 +2,7 @@
   "name": "go-test-highlighter",
   "displayName": "go-test-highlighter",
   "description": "Highlights Go test files",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "publisher": "makarychev13",
   "engines": {
     "vscode": "^1.91.0"
@@ -12,6 +12,10 @@
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/makarychev13/go-test-highlighter"
+  },
   "contributes": {
         "viewsWelcome": [
             {
@@ -29,7 +33,15 @@
                 }
             ]
         },
-        "themes": []
+        "themes": [],
+        "colors": {
+          "goTestFileDecoration": {
+            "dark": "#006400",
+            "light": "#90EE90",
+            "highContrast": "#00FF00",
+            "description": "Color for Go test files."
+          }
+        }
     },
   "scripts": {
     "vscode:prepublish": "npm run compile",
